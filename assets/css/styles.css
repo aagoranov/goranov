@@ -23,45 +23,12 @@ body {
   background-size: cover;
 }
 
-.background{
-  width: 400px;
-  height: 420px;
-  position: absolute;
-  transform: translate(-50%,-50%);
-  left: 50%;
-  top: 50%;
-}
-
-.background .shape{
-  height: 200px;
-  width: 200px;
-  position: absolute;
-  border-radius: 50%;
-}
-.shape:first-child{
-  background: linear-gradient(
-      #1845ad,
-      #23a2f6
-  );
-  left: -80px;
-  top: -80px;
-}
-.shape:last-child{
-  background: linear-gradient(
-      to right,
-      #ff512f,
-      #f09819
-  );
-  right: -30px;
-  bottom: -80px;
-}
-
 .wrapper {
   width: 340px;
   border-radius: 8px;
   padding: 50px;
   text-align: center;
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(235, 235, 235, 0.4);
   backdrop-filter: blur(9px);
   -webkit-backdrop-filter: blur(9px);
 }

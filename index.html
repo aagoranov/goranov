@@ -8,13 +8,21 @@
 	<link rel="stylesheet" href="./assets/css/styles.css">
 </head>
 <body>
+<!-- Small screen size message -->
+<div id="warning-message" style="display: none;">
+	<div id="warning-content">
+		<img src="./assets/img/favicon.png" alt="Logo">
+		<p>This website is not optimized for the current screen size. Please view it on a larger device.</p>
+	</div>
+</div>
+
 <!-- Log Out -->
 <div class="navbar navbar-default"  style="display: none;">
 	<li><a href="#" id="logout">Log Out</a></li>
 </div>
 
 <!-- Forms -->
-<div class="wrapper">	
+<div id="wrapper" class="wrapper">	
 	<!-- Registration -->
 	<div style="display: none;">
 		<form name="registration_form" id="registration_form" method="post" action="#" enctype="multipart/form-data" >
@@ -142,5 +150,33 @@
 			});		  		  
 	s});
 	  //----- End
+	</script>
+
+	<script>
+		function showWarningMessage() {
+			document.getElementById("warning-message").style.display = "block";
+			document.getElementById("wrapper").style.display = "none";
+		}
+
+		function hideWarningMessage() {
+			document.getElementById("warning-message").style.display = "none";
+			document.getElementById("wrapper").style.display = "block";
+		}
+
+		function checkScreenSize() {
+			const screenWidth = window.innerWidth;
+			const screenHeight = window.innerHeight;
+			const minScreenWidth = 250;
+
+			if (screenWidth < minScreenWidth) {
+				showWarningMessage();
+			} else {
+				hideWarningMessage();
+			}
+		}
+
+		checkScreenSize();
+
+		window.addEventListener("resize", checkScreenSize);
 	</script>
 </html>

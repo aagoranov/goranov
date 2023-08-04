@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="icon" href="/assets/img/logo/favicon.png" type="image/png">
+  <title>G-AUTH</title>
+	<link rel="stylesheet" href="/assets/css/auth.css">
+</head>
+<body>
+	<!-- Small screen size message -->
+	<div id="warning-message" style="display: none;">
+		<div id="warning-content">
+			<img src="/assets/img/logo/Orange_100.svg" alt="Logo">
+			<p>This website is not optimized for the current screen size. Please view it on a larger device.</p>
+		</div>
+	</div>
+
+	<!-- Log Out -->
+	<div class="navbar navbar-default"  style="display: none;">
+		<li><a href="#" id="logout">Log Out</a></li>
+	</div>
+
+	<!-- Forms -->
+	<div id="wrapper" class="wrapper">
+		<div class="logo-anim">
+			<img src="/assets/img/logo/Orange_100.svg" alt="Logo">
+		</div>
+		<!-- Registration -->
+		<div style="display: none;">
+			<form name="registration_form" id="registration_form" method="post" action="#" enctype="multipart/form-data" >
+				<div>
+					<div>
+							<label for="email">Email</label>
+							<input type="text" name="email" id="email" placeholder="Enter your email">
+					</div>
+					<div class="form-group">
+							<label for="password" >Password</label>
+							<input type="password" name="password" id="password" placeholder="Enter your password">
+					</div>
+					<button type="button" id="register" name="register">Register Now</button>
+				</div>
+			</form>
+		</div>
+		<!-- Login -->
+		<form name="login_form" id="login_form" method="post" action="#" enctype="multipart/form-data" >
+			<h2>Welcome</h2>
+				<div class="input-field">
+						<input type="text" name="login_email" id="login_email" required>
+						<label>Enter your email</label>
+				</div>
+				<div id="email_error" class="error-message"></div>
+				<div class="input-field">
+						<input type="password" name="login_password" id="login_password" required>
+						<label>Enter your password</label>
+				</div>
+				<div id="password_error" class="error-message"></div>
+				<button type="submit" id="login" name="login" class="login">Login</button>
+		</form>
+	</div>
+</body>
+<script type="module">
+	import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
+	import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-analytics.js";
+	import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-auth.js";
+
+	const firebaseConfig = {
+		apiKey: "AIzaSyCqp2LlzfMCP4tx5f6k72eY62BMUpWxiBs",
+		authDomain: "goranov-auth-18.firebaseapp.com",
+		projectId: "goranov-auth-18",
+		storageBucket: "goranov-auth-18.appspot.com",
+		messagingSenderId: "1091192399484",
+		appId: "1:1091192399484:web:3afa079d98ca18fb75cbf9",
+		measurementId: "G-R3M1HGZ44Y"
+	};
+
+	const app = initializeApp(firebaseConfig);
+	const analytics = getAnalytics(app);
+	const auth = getAuth();
+	console.log(app);
+
+	// New Registration \\	  
+	document.getElementById("register").addEventListener("click", function() {
+		var email =  document.getElementById("email").value;
+		var password = document.getElementById("password").value;
+		createUserWithEmailAndPassword(auth, email, password)
+		.then((userCredential) => {
+			const user = userCredential.user;
+			console.log(user);
+			alert("Registration successfully!!");
+		})
+		.catch((error) => {
+			const errorCode = error.code;
+			const errorMessage = error.message;
+			console.log(errorMessage);
+			alert(error);
+		});		  		  
+	});
+	// End \\
+
+	// Login code start \\
+	document.getElementById("login_form").addEventListener("submit", function() {
+		event.preventDefault();
+
+		var email =  document.getElementById("login_email").value;
+		var password = document.getElementById("login_password").value;
+
+		signInWithEmailAndPassword(auth, email, password)
+		.then((userCredential) => {
+			handleSuccessfulLogin(userCredential.user);
+			})
+			.catch((error) => {
+			const errorCode = error.code;
+			const errorMessage = error.message;
+			console.log(errorMessage);
+
+			document.getElementById('email_error').innerText = "";
+			document.getElementById('password_error').innerText = "";
+
+			if (errorCode === 'auth/invalid-email' || errorCode === 'auth/user-not-found') {
+				document.getElementById('email_error').innerText = "Невірна адреса";
+			} else if (errorCode === 'auth/wrong-password') {
+				document.getElementById('password_error').innerText = "Невірний пароль";
+			} else {
+				console.log(error);
+			}
+		});                  
+	});
+	
+	function handleSuccessfulLogin(user) {
+		console.log("Успішний вхід", user);
+
+		window.location.href = "/assets/html/home.html";
+
+		document.getElementById("login_password").value = "";
+	}
+	// End \\
+
+	// Logout code start \\	  
+	document.getElementById("logout").addEventListener("click", function() {
+		signOut(auth).then(() => {
+			console.log('Sign-out successful.');
+			alert('Sign-out successful.');
+			document.getElementById('logout').style.display = 'none';
+		}).catch((error) => {
+			console.log('An error happened.');
+		});		  		  
+	s});
+	// End \\
+</script>
+<script src="/assets/js/warning-message.js"></script>
+</html>
